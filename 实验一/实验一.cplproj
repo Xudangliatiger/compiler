@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="gb2312"?>
+<OSLProject Version="1.00" Name="实验一" SubjectID="11c951f4-9b13-40e1-8b73-39ba7d73b89b" SubjectName="编译原理" ProjectTemplateID="4c23da0f-8ae2-4370-bf9f-8c3fc656b942" NewProjectStuID="410d474b-4f5c-49ca-aa2b-e2d179ae5687" ProjectID="63930cad-dc0d-4327-8368-6860536a599b" CurriculumID="67294068-2523-4a71-b4b0-00830300f85f" CurriculumName="编译原理" CurriculumYear="97" TeacherName="刘刚" LessonID="323978c0-64cc-4de1-a25f-555bd4b87b25" LessonName="编译原理课程设计" StartSeconds="1545004800" EndSeconds="1545365400" Location="21B 376" TemplateNameGroup="" IsSubmitWork="0">
+	<Configurations>
+		<Configuration Name="Debug">
+			<Tool Name="PreBuildEventTool"/>
+			<Tool Name="CustomBuildTool"/>
+			<Tool Name="GCCCompilerTool" PreprocessorDefinitions="_DEBUG" GenerateDebugInformation="-1"/>
+			<Tool Name="PreLinkEventTool"/>
+			<Tool Name="GCCLinkerTool" AdditionalDependencies="&quot;$(CPLInstallDir)Dump\lib\RegexpToNFA_Demo.o&quot;"/>
+			<Tool Name="PostBuildEventTool"/>
+			<VisualContext>
+				<WatchPoints>
+					<WatchPoint FunctionName="post2nfa" ObserverID="568B665B-0108-4b33-8D02-F6C797E1ABBB">
+					</WatchPoint>
+				</WatchPoints>
+			</VisualContext>
+		</Configuration>
+		<Configuration Name="Release">
+			<Tool Name="PreBuildEventTool"/>
+			<Tool Name="CustomBuildTool"/>
+			<Tool Name="GCCCompilerTool" PreprocessorDefinitions="NDEBUG"/>
+			<Tool Name="PreLinkEventTool"/>
+			<Tool Name="GCCLinkerTool"/>
+			<Tool Name="PostBuildEventTool"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter Name="头文件" Filter="h;hpp;hxx">
+			<File RelativePath=".\NFAFragmentStack.h">
+			</File>
+			<File RelativePath=".\RegexpToNFA.h">
+			</File>
+			<File RelativePath=".\RegexpToPost.h">
+			</File>
+		</Filter>
+		<Filter Name="源文件" Filter="cpp;c;cc;cxx">
+			<File RelativePath=".\main.c">
+			</File>
+			<File RelativePath=".\NFAFragmentStack.c">
+			</File>
+			<File RelativePath=".\RegexpToPost.c">
+			</File>
+		</Filter>
+	</Files>
+</OSLProject>
