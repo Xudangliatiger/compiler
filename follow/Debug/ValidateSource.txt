@@ -1,0 +1,52 @@
+
+Follow 函数的调用信息：求文法的 Follow 集合。
+
+数据信息：
+
+文法：
+		exp -> exp addop term
+		exp -> term
+		addop -> +
+		addop -> -
+		term -> term mulop factor
+		term -> factor
+		mulop -> *
+		factor -> ( exp )
+		factor -> number
+
+First 集合：
+
+Follow 集合：
+
+---------------------------------------------------------------------------
+
+Follow 函数的返回信息：无返回值。
+
+数据信息：
+
+文法：
+		exp -> exp addop term
+		exp -> term
+		addop -> +
+		addop -> -
+		term -> term mulop factor
+		term -> factor
+		mulop -> *
+		factor -> ( exp )
+		factor -> number
+
+First 集合：
+		First(exp) = { (, number }
+		First(addop) = { +, - }
+		First(term) = { (, number }
+		First(mulop) = { * }
+		First(factor) = { (, number }
+
+Follow 集合：
+		Follow(exp) = { $, +, -, ) }
+		Follow(addop) = { (, number }
+		Follow(term) = { $, +, -, *, ) }
+		Follow(mulop) = { (, number }
+		Follow(factor) = { $, +, -, *, ) }
+
+===========================================================================

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="gb2312"?>
+<OSLProject Version="1.00" Name="follow" SubjectID="11c951f4-9b13-40e1-8b73-39ba7d73b89b" SubjectName="编译原理" ProjectTemplateID="8ef10a3c-678d-458d-b801-d9c2ed7a4b25" NewProjectStuID="8c637bc5-27e2-4507-b22e-60907b12a6ae" ProjectID="a9ad68e3-68ee-42a6-afd7-18777a8dfaa8" CurriculumID="67294068-2523-4a71-b4b0-00830300f85f" CurriculumName="编译原理" CurriculumYear="97" TeacherName="刘刚" LessonID="54777b64-6343-4105-ba22-48fa5ed11936" LessonName="编译原理课程设计" StartSeconds="1545609600" EndSeconds="1545970200" Location="21B 376" TemplateNameGroup="" IsSubmitWork="0">
+	<Configurations>
+		<Configuration Name="Debug">
+			<Tool Name="PreBuildEventTool"/>
+			<Tool Name="CustomBuildTool"/>
+			<Tool Name="GCCCompilerTool" PreprocessorDefinitions="_DEBUG" GenerateDebugInformation="-1" AdditionalOptions=""/>
+			<Tool Name="PreLinkEventTool"/>
+			<Tool Name="GCCLinkerTool" AdditionalDependencies="&quot;$(CPLInstallDir)Dump\lib\Follow_Demo.o&quot;"/>
+			<Tool Name="PostBuildEventTool"/>
+			<VisualContext>
+				<WatchPoints>
+					<WatchPoint FunctionName="Follow" ObserverID="EFE8FF23-1ED3-490d-82B6-6BE404A1D4D9">
+					</WatchPoint>
+				</WatchPoints>
+			</VisualContext>
+		</Configuration>
+		<Configuration Name="Release">
+			<Tool Name="PreBuildEventTool"/>
+			<Tool Name="CustomBuildTool"/>
+			<Tool Name="GCCCompilerTool" PreprocessorDefinitions="NDEBUG"/>
+			<Tool Name="PreLinkEventTool"/>
+			<Tool Name="GCCLinkerTool"/>
+			<Tool Name="PostBuildEventTool"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter Name="头文件" Filter="h;hpp;hxx">
+			<File RelativePath=".\Follow.h">
+			</File>
+		</Filter>
+		<Filter Name="源文件" Filter="cpp;c;cc;cxx">
+			<File RelativePath=".\main.c">
+			</File>
+		</Filter>
+	</Files>
+</OSLProject>
