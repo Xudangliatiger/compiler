@@ -42,8 +42,10 @@ int main(int argc, char* argv[])
 void AddSymbolToSelect(RuleSymbol* pSelect, RuleSymbol* pNewSymbol)
 {
 	 
-	
-	
+	while (pSelect->pNextSymbol != NULL){
+		pSelect= pSelect->pNextSymbol;
+	}
+	pSelect->pNextSymbol = pNewSymbol;	
 }
 
 /*
@@ -56,10 +58,12 @@ void AddSymbolToSelect(RuleSymbol* pSelect, RuleSymbol* pNewSymbol)
 */
 void AddSelectToRule(Rule* pRule, RuleSymbol* pNewSelect)
 {
+	RuleSymbol* pSelect = pRule->pFirstSymbol
 
-	//
-	// TODO: 在此添加代码
-	//
+	while (pSelect->pOther != NULL){
+		pSelect= pSelect->pOther;
+	}
+	pSelect->pOther = pNewSelect;
 	
 }
 
@@ -80,20 +84,60 @@ void RemoveLeftRecursion(Rule* pHead)
 
 	pSelect = pHead->pFirstSymbol; // 初始化 Select 游标
 	RuleSymbol **pSelectPrePtr = &pHead->pFirstSymbol;
+
+	
 	while(pSelect != NULL) // 循环处理所有的 Select
 	{
 		if(0 == pSelect->isToken && pSelect->pRule == pHead)// Select 存在左递归
-		{
+		{	
+			移除包含左递归的 Select
+			RuleSymbol* a = *pSelectPrePtr->pNextSymbol;
+			RuleSymbol* b = CreateSymbol();
+			b->isToken = 0;
+			b->pRule = pNewRule;
+			AddSymbolToSelect(a, b);
+			AddSelectToRule(pNewRule,a);
+
+			*pSelectPrePtr =  *pSelectPrePtr->pOther;
+			把所有的有A->A的情况全部给删除了。。
+
 			移除包含左递归的 Select，将其转换为右递归后添加到新 Rule 的末尾，并移动游标
+			pSelectPrePtr = &(*pSelectPrePtr)->pOther;
+			pSelect=pSelect->pOther;
+			
 		}
 		else // Select 不存在左递归
 		{
 			在没有左递归的 Select 末尾添加指向新 Rule 的非终结符，并移动游标
+			RuleSymbol* b = CreateSymbol();
+			b->isToken = 0;
+			b->pRule = pNewRule;
+			AddSymbolToSelect(pSelect,b);
+			
+			pSelectPrePtr = &(*pSelectPrePtr)->pOther;
+			pSelect=pSelect->pOther;
 		}
+
+		
 	}
 
 	在新 Rule 的最后加入ε(用 '$' 代替)
+	
+
+
+	RuleSymbol *b = CreateSymbol();
+	b->isToken = 1;
+	b->TokenName[0] = '$';
+	AddSelectToRule(pNewRule,b);
+
+
+	
+
+
+
+	
 	将新 Rule 插入文法链表
+	pHead->pNextRule = pNewRule;
 }
 
 
@@ -255,9 +299,7 @@ Rule* FindRule(Rule* pHead, const char* RuleName)
 void PrintRule(Rule* pHead)
 {
 	
-	//
-	// TODO: 在此添加代码
-	//
+	print怎么写啊，靠
 	
 }
 
