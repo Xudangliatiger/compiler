@@ -58,13 +58,34 @@ void AddSymbolToSelect(RuleSymbol* pSelect, RuleSymbol* pNewSymbol)
 */
 void AddSelectToRule(Rule* pRule, RuleSymbol* pNewSelect)
 {
-	RuleSymbol* pSelect = pRule->pFirstSymbol
-
-	while (pSelect->pOther != NULL){
-		pSelect= pSelect->pOther;
+	RuleSymbol* pSelectTemp;
+	pSelectTemp = pRule->pFirstSymbol;
+	//文法当前无任何规则时
+	if(pSelectTemp == NULL){
+		//当 Select 为 NULL 时就将一个ε终结符加入到文法末尾
+		if(pNewSelect == NULL){
+			pRule->pFirstSymbol = CreateSymbol();
+			pRule->pFirstSymbol->isToken = 1;
+			strcpy(pRule->pFirstSymbol->TokenName, "$");
+		}
+		else{
+			pRule->pFirstSymbol = pNewSelect;
+		}
 	}
-	pSelect->pOther = pNewSelect;
-	
+	else{
+		//select指针移到当前文法最后一个select
+		while(pSelectTemp->pOther != NULL){
+			pSelectTemp = pSelectTemp->pOther;
+		}
+		if(pNewSelect == NULL){
+			pSelectTemp->pOther = CreateSymbol();
+			pSelectTemp->pOther->isToken = 1;
+			strcpy(pSelectTemp->pOther->TokenName, "$");
+		}
+		else{
+			pSelectTemp->pOther = pNewSelect;
+		}
+	}
 }
 
 /*
@@ -84,60 +105,59 @@ void RemoveLeftRecursion(Rule* pHead)
 
 	pSelect = pHead->pFirstSymbol; // 初始化 Select 游标
 	RuleSymbol **pSelectPrePtr = &pHead->pFirstSymbol;
-
 	
 	while(pSelect != NULL) // 循环处理所有的 Select
 	{
 		if(0 == pSelect->isToken && pSelect->pRule == pHead)// Select 存在左递归
 		{	
-			移除包含左递归的 Select
-			RuleSymbol* a = *pSelectPrePtr->pNextSymbol;
+			//移除包含左递归的 Select
+		
+			RuleSymbol* a = pSelect->pNextSymbol;
 			RuleSymbol* b = CreateSymbol();
 			b->isToken = 0;
 			b->pRule = pNewRule;
 			AddSymbolToSelect(a, b);
 			AddSelectToRule(pNewRule,a);
+			
 
-			*pSelectPrePtr =  *pSelectPrePtr->pOther;
-			把所有的有A->A的情况全部给删除了。。
-
-			移除包含左递归的 Select，将其转换为右递归后添加到新 Rule 的末尾，并移动游标
-			pSelectPrePtr = &(*pSelectPrePtr)->pOther;
+			(*pSelectPrePtr) =  (*pSelectPrePtr)->pOther;
+			
+			//把所有的有A->A的情况全部给删除了。。 
+			
+			//移除包含左递归的 Select，将其转换为右递归后添加到新 Rule 的末尾，并移动游标
+			
 			pSelect=pSelect->pOther;
 			
 		}
 		else // Select 不存在左递归
 		{
-			在没有左递归的 Select 末尾添加指向新 Rule 的非终结符，并移动游标
+			//在没有左递归的 Select 末尾添加指向新 Rule 的非终结符，并移动游标
 			RuleSymbol* b = CreateSymbol();
 			b->isToken = 0;
 			b->pRule = pNewRule;
 			AddSymbolToSelect(pSelect,b);
 			
-			pSelectPrePtr = &(*pSelectPrePtr)->pOther;
+			pSelectPrePtr = &((*pSelectPrePtr)->pOther);
 			pSelect=pSelect->pOther;
 		}
+		
+		
 
 		
 	}
 
-	在新 Rule 的最后加入ε(用 '$' 代替)
+	//在新 Rule 的最后加入ε(用 '$' 代替)
 	
-
-
-	RuleSymbol *b = CreateSymbol();
-	b->isToken = 1;
-	b->TokenName[0] = '$';
-	AddSelectToRule(pNewRule,b);
-
-
-	
+	AddSelectToRule(pNewRule, NULL);
 
 
 
 	
-	将新 Rule 插入文法链表
+	//将新 Rule 插入文法链表
 	pHead->pNextRule = pNewRule;
+	
+	
+	return pHead;
 }
 
 
@@ -299,7 +319,31 @@ Rule* FindRule(Rule* pHead, const char* RuleName)
 void PrintRule(Rule* pHead)
 {
 	
-	print怎么写啊，靠
-	
+	const Rule* pRule;
+	for(pRule = pHead;pRule != NULL;pRule = pRule->pNextRule)
+	{
+		printf("%s -> ",pRule->RuleName);
+		RuleSymbol* pSelect = pRule->pFirstSymbol;
+		for(;pSelect != NULL;pSelect = pSelect->pOther)
+		{
+			RuleSymbol* pRuleSymbol = pSelect;
+			for(;pRuleSymbol != NULL;pRuleSymbol = pRuleSymbol->pNextSymbol)
+			{
+				if(pRuleSymbol->isToken == 1)
+				{
+					printf("%s ",pRuleSymbol->TokenName);
+				}
+				else
+				{
+					printf("%s ",pRuleSymbol->pRule->RuleName);
+				}
+			
+			}
+			if(pSelect->pOther != NULL)
+			{
+				printf("| ");
+			}
+	  	}
+	  printf("\n");
+	}
 }
-

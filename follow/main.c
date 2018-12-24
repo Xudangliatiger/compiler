@@ -6,7 +6,7 @@ const char* DollarSymbol = "$";
 int main(int argc, char* argv[])
 {
 	//
-	// 调用 InitRules 函数初始化文法
+	// 调用 InitRules 函数初始化文法 
 	//
 	Rule* pHead = InitRules();
 
@@ -137,7 +137,7 @@ int SetHasVoid(const Set* pSet)
 */
 void First(const Rule* pHead, SetList* pFirstSetList)
 {
-	const Rule* pRule;  // Rule 指针
+	const Rule* pRule;  // Rule 指针         
 	int isChange;	    // 集合是否被修改的标志
 	RuleSymbol* pSymbol;// Symbol 游标
 	
