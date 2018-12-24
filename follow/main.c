@@ -6,7 +6,7 @@ const char* DollarSymbol = "$";
 int main(int argc, char* argv[])
 {
 	//
-	// 调用 InitRules 函数初始化文法 
+	// 调用 InitRules 函数初始化文法
 	//
 	Rule* pHead = InitRules();
 
@@ -40,7 +40,15 @@ int main(int argc, char* argv[])
 */
 void AddOneSet(SetList* pSetList, const char* pName)
 {
-
+	int i;
+    for(i = 0; i < pSetList->nSetCount; i++){
+    	if(!strcmp(pSetList->Sets[i].Name, pName))
+    	break;
+   }
+   if(i == pSetList->nSetCount){
+    	strcpy(pSetList->Sets[pSetList->nSetCount].Name, pName);
+    	pSetList->nSetCount++;  
+   }
 	//
 	// TODO: 在此添加代码
 	//
@@ -60,7 +68,15 @@ void AddOneSet(SetList* pSetList, const char* pName)
 */
 Set* GetSet(SetList* pSetList, const char* pName)
 {
-
+	Set* SetCursor = (Set*)malloc(sizeof(Set));
+    int i = 0;
+    for(*SetCursor = pSetList->Sets[0]; i < pSetList->nSetCount; i++){
+      *SetCursor = pSetList->Sets[i];
+      if(!strcmp(SetCursor->Name, pName)){
+      	 return &pSetList->Sets[i];
+      }
+    } 
+    return NULL;
 	//
 	// TODO: 在此添加代码
 	//
@@ -80,7 +96,20 @@ Set* GetSet(SetList* pSetList, const char* pName)
 */
 int AddTerminalToSet(Set* pSet, const char* pTerminal)
 {
-
+	int i = 0; 
+    for(i = 0; i < pSet->nTerminalCount; i++){
+    	if(!strcmp(pSet->Terminal[i], pTerminal))
+   	 	break;
+    	else
+    	continue;
+    }
+    if(i == pSet->nTerminalCount){
+   	 strcpy(pSet->Terminal[pSet->nTerminalCount], pTerminal);
+   	 pSet->nTerminalCount++;
+   	 return 1;
+    }
+    else
+    { return 0; }	
 	//
 	// TODO: 在此添加代码
 	//
@@ -100,7 +129,25 @@ int AddTerminalToSet(Set* pSet, const char* pTerminal)
 */
 int AddSetToSet(Set* pDesSet, const Set* pSrcSet)
 {
-
+	int i = 0;
+    int j = 0;
+    int k = 0;
+    for(i = 0; i < (pSrcSet->nTerminalCount)&& strcmp(pSrcSet->Terminal[i],VoidSymbol); i++){
+   	 for(j = 0; j < pDesSet->nTerminalCount; j++){
+      	 if(!strcmp(pSrcSet->Terminal[i],pDesSet->Terminal[j]))
+      	 break;
+   	 }
+     if(j == pDesSet->nTerminalCount){
+      	if(!strcpy(pDesSet->Terminal[pDesSet->nTerminalCount],pSrcSet->Terminal[i]))
+      	return 0;
+      	pDesSet->nTerminalCount++;
+      	k++;
+  	 }
+   }
+    if(k == 0)
+ 	return 0;
+ 	else
+ 	return 1;
 	//
 	// TODO: 在此添加代码
 	//
@@ -120,7 +167,13 @@ int AddSetToSet(Set* pDesSet, const Set* pSrcSet)
 */
 int SetHasVoid(const Set* pSet)
 {
-
+	int i = 0;
+    for(i = 0; i < pSet->nTerminalCount; i++)
+    {
+     	if(!strcmp(pSet->Terminal[i], VoidSymbol))
+     	return 1;
+    }
+    return 0;	
 	//
 	// TODO: 在此添加代码
 	//
@@ -137,11 +190,40 @@ int SetHasVoid(const Set* pSet)
 */
 void First(const Rule* pHead, SetList* pFirstSetList)
 {
-	const Rule* pRule;  // Rule 指针         
+	const Rule* pRule;  // Rule 指针
 	int isChange;	    // 集合是否被修改的标志
 	RuleSymbol* pSymbol;// Symbol 游标
 	
-	
+	//使用文法链表初始化First集合
+	for(pRule=pHead;pRule!=NULL;pRule=pRule->pNextRule){
+	   AddOneSet(pFirstSetList,pRule->RuleName);
+	 }
+	 do{
+	   		isChange=0;//设置修改标志
+	   		for(pRule=pHead;pRule!=NULL;pRule=pRule->pNextRule){
+	       		Set *pDesSet=GetSet(pFirstSetList,pRule->RuleName);
+	        	int hasVoid=1;//First集合中是否含有e的标志
+	        	for(pSymbol=pRule->pFirstSymbol;pSymbol!=NULL&&hasVoid;pSymbol=pSymbol->pNextSymbol){
+	                 if(pSymbol->isToken){  
+	                         if(AddTerminalToSet(pDesSet,pSymbol->SymbolName))
+	                            isChange=1;
+	                         hasVoid = 0;// 设置First集合中是否含有e标志
+	                  }
+	                  else{
+	                      //根据非终结符名称在pFirstSetList中查找Set
+	                      	Set* pSrcSet= GetSet(pFirstSetList,pSymbol->SymbolName);
+	                      	if(AddSetToSet(pDesSet,pSrcSet))
+	                            isChange=1;
+	                      //调用SetHasVoid函数，判断源Set中是否含有e
+	                      	hasVoid=SetHasVoid(pSrcSet);
+	                  }   
+	           }
+	         	if(hasVoid){
+	         	//AddTerminalToSet函数将e加入到目标集合中
+	         		AddTerminalToSet(pDesSet,VoidSymbol);
+	         	}    
+	    	}
+     }while(isChange);
 	//
 	// TODO: 在此添加代码
 	//
@@ -159,12 +241,12 @@ void First(const Rule* pHead, SetList* pFirstSetList)
 */
 void Follow(const Rule* pHead, SetList* pFollowSetList, SetList* pFirstSetList)
 {
-	const Rule* pRule;	// Rule 指针
-	int isChange;		// 集合是否被修改的标志
+	const Rule* pRule;  // Rule 指针
+	int isChange;	    // 集合是否被修改的标志
 	RuleSymbol* pSymbol;// Symbol 游标
 
 	// 调用 First 函数求文法的 First 集合
-	First(pFirstSetList, pHead);
+	First(pHead, pFirstSetList);
 
 	// 使用文法链表初始化 Follow 集合
 	for(pRule = pHead; pRule != NULL; pRule = pRule->pNextRule)
@@ -233,8 +315,12 @@ void Follow(const Rule* pHead, SetList* pFollowSetList, SetList* pFirstSetList)
 		}
 
 	} while(isChange);
+	
+	//
+	// TODO: 在此添加代码
+	//
+	
 }
-
 
 typedef struct _SYMBOL{
 	int isToken;
@@ -372,4 +458,3 @@ void PrintRule(const Rule* pHead)
 		printf("\n");
 	}
 }
-

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="gb2312"?>
-<OSLProject Version="1.00" Name="follow" SubjectID="11c951f4-9b13-40e1-8b73-39ba7d73b89b" SubjectName="编译原理" ProjectTemplateID="8ef10a3c-678d-458d-b801-d9c2ed7a4b25" NewProjectStuID="8c637bc5-27e2-4507-b22e-60907b12a6ae" ProjectID="a9ad68e3-68ee-42a6-afd7-18777a8dfaa8" CurriculumID="67294068-2523-4a71-b4b0-00830300f85f" CurriculumName="编译原理" CurriculumYear="97" TeacherName="刘刚" LessonID="323978c0-64cc-4de1-a25f-555bd4b87b25" LessonName="编译原理课程设计" StartSeconds="1545004800" EndSeconds="1545970200" Location="21B 376" TemplateNameGroup="" IsSubmitWork="0">
+<OSLProject Version="1.00" Name="follow" SubjectID="11c951f4-9b13-40e1-8b73-39ba7d73b89b" SubjectName="编译原理" ProjectTemplateID="8ef10a3c-678d-458d-b801-d9c2ed7a4b25" NewProjectStuID="8c637bc5-27e2-4507-b22e-60907b12a6ae" ProjectID="a9ad68e3-68ee-42a6-afd7-18777a8dfaa8" CurriculumID="67294068-2523-4a71-b4b0-00830300f85f" CurriculumName="编译原理" CurriculumYear="97" TeacherName="刘刚" LessonID="323978c0-64cc-4de1-a25f-555bd4b87b25" LessonName="编译原理课程设计" StartSeconds="1545004800" EndSeconds="1545970200" Location="21B 376" TemplateNameGroup="" IsSubmitWork="-1" LastSubmitTime="1545641854">
 	<Configurations>
 		<Configuration Name="Debug">
 			<Tool Name="PreBuildEventTool"/>
